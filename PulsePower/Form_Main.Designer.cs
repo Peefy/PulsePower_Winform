@@ -36,7 +36,7 @@
             this.labelStatus = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
             this.comcmb = new System.Windows.Forms.ComboBox();
-            this.timerGetData = new System.Windows.Forms.Timer(this.components);
+            this.GetData = new System.Windows.Forms.Timer(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.labelPulseWidth = new System.Windows.Forms.Label();
             this.labelTimesOfLow = new System.Windows.Forms.Label();
@@ -103,8 +103,8 @@
             // 
             // timerGetData
             // 
-            this.timerGetData.Interval = 800;
-            this.timerGetData.Tick += new System.EventHandler(this.timerGetData_Tick);
+            this.GetData.Interval = 800;
+            this.GetData.Tick += new System.EventHandler(this.timerGetData_Tick);
             // 
             // button1
             // 
@@ -214,7 +214,7 @@
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.ComboBox comcmb;
-        public System.Windows.Forms.Timer timerGetData;
+        public System.Windows.Forms.Timer GetData;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label labelPulseWidth;
         private System.Windows.Forms.Label labelTimesOfLow;

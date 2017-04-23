@@ -60,7 +60,7 @@ namespace PulsePower
             {
                 if (serialPort.IsOpen)
                 {
-                    timerGetData.Enabled = false;
+                    GetData.Enabled = false;
                     master.Dispose();
                     serialPort.Close();
                 }
@@ -82,9 +82,11 @@ namespace PulsePower
                     serialPort.StopBits = StopBits.One;//一般是1位停止位
                     serialPort.Open();
                     master = ModbusSerialMaster.CreateRtu(serialPort);
-                    master.Transport.Retries = 0;   //don't have to do retries
+                    master.Transport.Retries = 2;   //don't have to do retries
                     master.Transport.ReadTimeout = 300; //milliseconds
-                    timerGetData.Enabled = true;
+                    master.Transport.WaitToRetryMilliseconds = 0;
+                    master.Transport.WriteTimeout = 100;
+                    GetData.Enabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -98,25 +100,7 @@ namespace PulsePower
         {
             try
             {
-                byte slaveID = 1;
-                ushort startAddress = 0;
-                ushort numofPoints = 8;  //数据帧中 word 的数量
-                ushort[] holdingregister = master.ReadHoldingRegisters(slaveID, startAddress, numofPoints);
-                byte[] bytes = { };
-                for (int i = 0; i < numofPoints; i++)
-                {
-                    byte[] byteTemp;
-                    byteTemp = BitConverter.GetBytes(holdingregister[i]);
-                    bytes = BitConverterHelper.BytesConnect(bytes, byteTemp);
-                }
-                labelStatus.Text = "";
-                foreach(var b in bytes)
-                {
-                    labelStatus.Text += b.ToString() + " ";
-                }
-                labelPulseWidth.Text = "脉宽:" + BitConverterHelper.ToInt16(bytes, 0).ToString() + "us";
-                labelTimesOfLow.Text = "脉间:" + BitConverterHelper.ToInt16(bytes, 2).ToString() + "倍";
-                labelCurrent.Text = "电流:" + BitConverterHelper.ToSingle(bytes, 4).ToString() + "A";
+                timerGetData();
             }
             catch(Exception ex)
             {
@@ -170,11 +154,36 @@ namespace PulsePower
                     valCurrent1,
                     valCurrent2,
                 });
+                timerGetData();
             }
             catch
             {
 
             }
         }
+
+        void timerGetData()
+        {
+            byte slaveID = 1;
+            ushort startAddress = 0;
+            ushort numofPoints = 8;  //数据帧中 word 的数量
+            ushort[] holdingregister = master.ReadHoldingRegisters(slaveID, startAddress, numofPoints);
+            byte[] bytes = { };
+            for (int i = 0; i < numofPoints; i++)
+            {
+                byte[] byteTemp;
+                byteTemp = BitConverter.GetBytes(holdingregister[i]);
+                bytes = BitConverterHelper.BytesConnect(bytes, byteTemp);
+            }
+            labelStatus.Text = "";
+            foreach (var b in bytes)
+            {
+                labelStatus.Text += b.ToString() + " ";
+            }
+            labelPulseWidth.Text = "脉宽:" + BitConverterHelper.ToInt16(bytes, 0).ToString() + "us";
+            labelTimesOfLow.Text = "脉间:" + BitConverterHelper.ToInt16(bytes, 2).ToString() + "倍";
+            labelCurrent.Text = "电流:" + BitConverterHelper.ToSingle(bytes, 4).ToString() + "A";
+        }
+
     }
 }
