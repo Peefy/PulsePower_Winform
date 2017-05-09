@@ -44,7 +44,13 @@
             this.textBoxTimesOfLow = new System.Windows.Forms.TextBox();
             this.labelCurrent = new System.Windows.Forms.Label();
             this.textBoxCurrent = new System.Windows.Forms.TextBox();
+            this.textboxNumber = new System.Windows.Forms.NumericUpDown();
+            this.labelNumber = new System.Windows.Forms.Label();
+            this.textboxHz = new System.Windows.Forms.NumericUpDown();
+            this.labelHz = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textboxNumber)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textboxHz)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -101,7 +107,7 @@
             this.comcmb.Size = new System.Drawing.Size(99, 20);
             this.comcmb.TabIndex = 3;
             // 
-            // timerGetData
+            // GetData
             // 
             this.GetData.Interval = 800;
             this.GetData.Tick += new System.EventHandler(this.timerGetData_Tick);
@@ -170,17 +176,75 @@
             this.textBoxCurrent.TabIndex = 6;
             this.textBoxCurrent.Text = "5";
             // 
+            // textboxNumber
+            // 
+            this.textboxNumber.Location = new System.Drawing.Point(112, 144);
+            this.textboxNumber.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.textboxNumber.Name = "textboxNumber";
+            this.textboxNumber.Size = new System.Drawing.Size(100, 21);
+            this.textboxNumber.TabIndex = 8;
+            // 
+            // labelNumber
+            // 
+            this.labelNumber.AutoSize = true;
+            this.labelNumber.Font = new System.Drawing.Font("宋体", 12F);
+            this.labelNumber.Location = new System.Drawing.Point(109, 126);
+            this.labelNumber.Name = "labelNumber";
+            this.labelNumber.Size = new System.Drawing.Size(40, 16);
+            this.labelNumber.TabIndex = 5;
+            this.labelNumber.Text = "组号";
+            // 
+            // textboxHz
+            // 
+            this.textboxHz.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.textboxHz.Location = new System.Drawing.Point(236, 144);
+            this.textboxHz.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.textboxHz.Name = "textboxHz";
+            this.textboxHz.Size = new System.Drawing.Size(100, 21);
+            this.textboxHz.TabIndex = 8;
+            this.textboxHz.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // labelHz
+            // 
+            this.labelHz.AutoSize = true;
+            this.labelHz.Font = new System.Drawing.Font("宋体", 12F);
+            this.labelHz.Location = new System.Drawing.Point(234, 124);
+            this.labelHz.Name = "labelHz";
+            this.labelHz.Size = new System.Drawing.Size(40, 16);
+            this.labelHz.TabIndex = 5;
+            this.labelHz.Text = "丝速";
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.ClientSize = new System.Drawing.Size(507, 262);
+            this.Controls.Add(this.textboxHz);
+            this.Controls.Add(this.textboxNumber);
             this.Controls.Add(this.labelCurrent);
             this.Controls.Add(this.textBoxCurrent);
             this.Controls.Add(this.textBoxTimesOfLow);
             this.Controls.Add(this.textBoxPulseWidth);
             this.Controls.Add(this.labelTimesOfLow);
+            this.Controls.Add(this.labelHz);
+            this.Controls.Add(this.labelNumber);
             this.Controls.Add(this.labelPulseWidth);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.comcmb);
@@ -201,6 +265,8 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMoveForm_Main_MouseMove);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.textboxNumber)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.textboxHz)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -222,6 +288,10 @@
         private System.Windows.Forms.TextBox textBoxTimesOfLow;
         private System.Windows.Forms.Label labelCurrent;
         private System.Windows.Forms.TextBox textBoxCurrent;
+        private System.Windows.Forms.NumericUpDown textboxNumber;
+        private System.Windows.Forms.Label labelNumber;
+        private System.Windows.Forms.NumericUpDown textboxHz;
+        private System.Windows.Forms.Label labelHz;
     }
 }
 

@@ -1,13 +1,14 @@
-﻿using Modbus.Device;
-using PulsePower.Helpers;
+﻿
+
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO.Ports;
-using System.Text;
 using System.Windows.Forms;
+
+using Modbus.Device;
+
+using PulsePower.Helpers;
 
 namespace PulsePower
 {
@@ -85,7 +86,7 @@ namespace PulsePower
                     master.Transport.Retries = 2;   //don't have to do retries
                     master.Transport.ReadTimeout = 300; //milliseconds
                     master.Transport.WaitToRetryMilliseconds = 0;
-                    master.Transport.WriteTimeout = 100;
+                    master.Transport.WriteTimeout = 80;
                     GetData.Enabled = true;
                 }
                 catch (Exception ex)
@@ -141,18 +142,24 @@ namespace PulsePower
            
             try
             {
+
                 ushort valWidth = (ushort)Int16.Parse(textBoxPulseWidth.Text);
                 ushort valTimes = (ushort)Int16.Parse(textBoxTimesOfLow.Text);
                 float valCurrent = (float)float.Parse(textBoxCurrent.Text);
+                byte valNumber = byte.Parse(textboxNumber.Value.ToString());
+                byte valHz = byte.Parse(textboxHz.Value.ToString());
+
+                byte u8Temp = (byte)((valNumber << 4) + valTimes);
+                ushort u16Temp = (ushort)(((ushort)u8Temp << 8) + valHz);
+
                 var bytes = BitConverter.GetBytes(valCurrent);
                 ushort valCurrent1 = (ushort)BitConverterHelper.ToInt16(bytes, 0);
                 ushort valCurrent2 = (ushort)BitConverterHelper.ToInt16(bytes, 2);
                 master?.WriteMultipleRegisters(1, 0, new ushort[] 
                 {
+                    u16Temp,
                     valWidth,
-                    valTimes,
-                    valCurrent1,
-                    valCurrent2,
+                    Convert.ToUInt16(valCurrent),
                 });
                 timerGetData();
             }
@@ -168,6 +175,12 @@ namespace PulsePower
             ushort startAddress = 0;
             ushort numofPoints = 8;  //数据帧中 word 的数量
             ushort[] holdingregister = master.ReadHoldingRegisters(slaveID, startAddress, numofPoints);
+            var u16Temp = holdingregister[0];
+            labelPulseWidth.Text = "脉宽:" + (holdingregister[1] * 20 /1000.0).ToString() + "us";
+            labelTimesOfLow.Text = "脉间:" + ((holdingregister[0] >> 8) & 0x0f).ToString() + "倍";
+            labelCurrent.Text = "电流:" + (holdingregister[2] / 10.0).ToString() + "A";
+            labelNumber.Text = "组态号：" + (holdingregister[0] >> 12);
+            labelHz.Text = "丝速：" + (byte)(holdingregister[0]) + "Hz";
             byte[] bytes = { };
             for (int i = 0; i < numofPoints; i++)
             {
@@ -180,10 +193,6 @@ namespace PulsePower
             {
                 labelStatus.Text += b.ToString() + " ";
             }
-            labelPulseWidth.Text = "脉宽:" + BitConverterHelper.ToInt16(bytes, 0).ToString() + "us";
-            labelTimesOfLow.Text = "脉间:" + BitConverterHelper.ToInt16(bytes, 2).ToString() + "倍";
-            labelCurrent.Text = "电流:" + BitConverterHelper.ToSingle(bytes, 4).ToString() + "A";
         }
-
     }
 }
