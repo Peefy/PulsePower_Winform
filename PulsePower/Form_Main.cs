@@ -143,9 +143,9 @@ namespace PulsePower
             try
             {
 
-                ushort valWidth = (ushort)Int16.Parse(textBoxPulseWidth.Text);
+                ushort valWidth = (ushort)(Int16.Parse(textBoxPulseWidth.Text) * 1000 / 20);
                 ushort valTimes = (ushort)Int16.Parse(textBoxTimesOfLow.Text);
-                float valCurrent = (float)float.Parse(textBoxCurrent.Text);
+                float valCurrent = (float)float.Parse(textBoxCurrent.Text) * 10;
                 byte valNumber = byte.Parse(textboxNumber.Value.ToString());
                 byte valHz = byte.Parse(textboxHz.Value.ToString());
 
