@@ -54,7 +54,11 @@ namespace PulsePower
                 master = null;
             }
         }
-
+        /// <summary>
+        /// 打开或者关闭串口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnConnect_Click(object sender, EventArgs e)
         {
             try
